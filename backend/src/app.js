@@ -1,5 +1,6 @@
 const express = require("express");
 const auditRoutes = require("./routes/audit.routes");
+const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
 
@@ -10,5 +11,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/audit", auditRoutes);
+
+app.use(errorHandler);
 
 module.exports = app;
