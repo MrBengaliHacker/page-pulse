@@ -1,8 +1,12 @@
 const express = require("express");
+const cors = require("cors");
+
 const auditRoutes = require("./routes/audit.routes");
 const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
