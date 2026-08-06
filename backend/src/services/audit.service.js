@@ -15,22 +15,30 @@ const validateUrl = (url) => {
 const fetchWebsite = async (url) => {
     const startTime = Date.now();
 
-    const response = await axios.get(url, {
-        timeout: 5000
-    });
+    try {
 
-    const responseTime = Date.now() - startTime;
+        const response = await axios.get(url, {
+            timeout: 5000
+        });
 
-    const contentType = response.headers["content-type"];
+        const responseTime = Date.now() - startTime;
 
-    if (!contentType.includes("text/html")) {
-        throw new Error("Only HTML pages are supported.");
+        const contentType = response.headers["content-type"] || "";
+
+        if (!contentType.includes("text/html")) {
+            throw new Error("Only HTML pages are supported.");
+        }
+
+        return {
+            response,
+            responseTime
+        };
+
+    } catch (error) {
+
+        throw error;
+
     }
-
-    return {
-        response,
-        responseTime
-    };
 };
 
 // Extract Metadata
@@ -41,7 +49,7 @@ const extractMetadata = (html, status, responseTime) => {
 
     const description =
         $('meta[name="description"]').attr("content")?.trim() ||
-        "No description found";
+        "This website doesn't provide a meta description.";
 
     const h1Count = $("h1").length;
 

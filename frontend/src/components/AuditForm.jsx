@@ -1,60 +1,50 @@
 import { useState } from "react";
 import { auditWebsite } from "../services/api";
 
-function AuditForm({ setResult, setLoading }) {
+function AuditForm({ setResult, setLoading, setError, loading }) {
+  const [url, setUrl] = useState("");
 
-    const [url, setUrl] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    setLoading(true);
+    setError("");
 
-        setLoading(true);
+    try {
+      const data = await auditWebsite(url);
 
-        try {
+      setResult(data);
+      setError("");
+    } catch (error) {
+      setResult(null);
 
-            const data = await auditWebsite(url);
+      setError(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            setResult(data);
+  return (
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md">
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <input
+          type="text"
+          placeholder="Enter website URL (https://example.com)"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          className="w-full flex-1 border rounded-lg px-4 py-4 text-lg outline-none focus:ring-4 focus:ring-blue-200"
+        />
 
-        } catch (error) {
-
-            alert(
-                error.response?.data?.message ||
-                "Something went wrong"
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-    };
-
-    return (
-        <form
-            onSubmit={handleSubmit}
-            className="bg-white p-6 rounded-xl shadow-md"
+        <button
+          type="submit"
+          disabled={loading || !url.trim()}
+          className="w-full sm:w-auto bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
-            <div className="flex gap-3">
-
-                <input
-                    type="text"
-                    placeholder="https://example.com"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    className="flex-1 border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                />
-
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-6 rounded-lg hover:bg-blue-700 transition"
-                >
-                    Analyze
-                </button>
-
-            </div>
-        </form>
-    );
+          {loading ? "Analyzing..." : "Analyze"}
+        </button>
+      </div>
+    </form>
+  );
 }
 
 export default AuditForm;
