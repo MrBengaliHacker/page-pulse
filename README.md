@@ -70,6 +70,7 @@ Below are a few screenshots of the application running in production.
 - Express.js
 - Axios
 - Cheerio
+- Jest
 
 ---
 
@@ -132,6 +133,23 @@ http://localhost:5173
 
 ---
 
+## 🧪 Running Tests
+
+Navigate to the backend directory and run:
+
+```bash
+cd backend
+npm test
+```
+
+Current test coverage includes:
+
+- ✅ Valid website audit
+- ✅ Invalid URL handling
+- ✅ Non-HTML page handling
+
+---
+
 ## 📌 API
 
 ### Endpoint
@@ -159,12 +177,12 @@ https://page-pulse-v5sh.onrender.com/api/audit
 ```json
 {
   "status": 200,
-  "responseTime": "594 ms",
+  "responseTime": "84 ms",
   "title": "GitHub · Build and ship software on a single, collaborative platform",
   "description": "GitHub is where developers build, ship, and maintain software.",
   "h1Count": 1,
-  "missingAltCount": 3,
-  "wordCount": 2456
+  "missingAltCount": 17,
+  "wordCount": 2265
 }
 ```
 
@@ -187,7 +205,7 @@ The API returns meaningful error messages for common situations:
 
 **Ritam Mondal**
 
-- GitHub: https://github.com/MrBengaliHacker
+- GitHub: [MrBengaliHacker](https://github.com/MrBengaliHacker)
 
 ---
 
